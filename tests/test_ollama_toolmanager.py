@@ -3,6 +3,7 @@ import asyncio
 from unittest.mock import MagicMock, patch
 from ollama_toolmanager import OllamaToolManager, OllamaTool
 
+# I did not write these tests. Cursor FTW!
 
 # Test functions to register as tools
 def add(a: int, b: int) -> int:

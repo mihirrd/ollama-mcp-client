@@ -25,7 +25,6 @@ class OllamaAgent:
         result = await self.handle_response(query)
         return result
 
-
     async def handle_response(self, response):
         tool_calls = response.message.tool_calls
         if tool_calls:

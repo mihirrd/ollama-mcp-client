@@ -12,6 +12,8 @@ async def main():
         env=None
     )
 
+    # Update model in OllamaAgent
+    # List of local models supporting tool usage: https://ollama.com/search?c=tools
     agent = OllamaAgent("qwen2.5", OllamaToolManager())
 
 
@@ -25,7 +27,6 @@ async def main():
                 description=tool.description,
                 inputSchema=tool.inputSchema
             )
-
 
         while True:
             try:

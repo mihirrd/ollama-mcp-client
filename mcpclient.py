@@ -49,6 +49,5 @@ class MCPClient:
         """Call a tool with given arguments"""
         if not self.session:
             raise RuntimeError("Not connected to MCP server")
-            
         result = await self.session.call_tool(tool_name, arguments=arguments)
         return result
