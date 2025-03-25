@@ -28,10 +28,10 @@ uv pip install -e .
 
 ### Running the Git Assistant
 
-!NOTE: Befoe you run the project, replace the repo path in 
-git_server_params in ollama_tool_manager.py/execute_tool fn 
-with your repository path. I know it's not ideal but the 
-LLM just won't get the repo path by itself. 
+###!NOTE: 
+Befoe you run the project, replace the repo path in 
+execute_tool fn in ollama_tool_manager.py with your repository path. 
+I know it's not ideal but the LLM just won't get the repo path by itself. 
 
 ```bash
 uv run main.py
