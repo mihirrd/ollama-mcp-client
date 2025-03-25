@@ -27,6 +27,10 @@ class OllamaAgent:
 
     async def handle_response(self, response):
         tool_calls = response.message.tool_calls
+        self.messages.append({
+            'role' : 'tool',
+            'content' : str(response)
+        })
         if tool_calls:
             tool_payload = tool_calls[0]
             result = await self.tool_manager.execute_tool(tool_payload)

@@ -31,7 +31,7 @@ async def main():
 
         while True:
             try:
-                user_prompt = input("Welcome to Git assistant, what can I help you with?\n")
+                user_prompt = input("How can I help you?\n")
                 if user_prompt.lower() in ['quit', 'exit', 'q']:
                     break
                 with Spinner("Finding the right tool for the job"):
