@@ -1,6 +1,6 @@
-# Ollama MCP (Model Control Protocol)
+# Ollama MCP (Model Context Protocol)
 
-Ollama MCP is a tool for connecting Ollama-based language models with external tools and services using the Model Control Protocol (MCP). This integration enables LLMs to interact with various systems like Git repositories, shell commands, and other tool-enabled services.
+Ollama MCP is a tool for connecting Ollama-based language models with external tools and services using the Model Context Protocol (MCP). This integration enables LLMs to interact with various systems like Git repositories, shell commands, and other tool-enabled services.
 
 ## Features
 
