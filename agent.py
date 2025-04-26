@@ -26,17 +26,21 @@ class OllamaAgent:
         return result
 
     async def handle_response(self, response):
-        tool_calls = response.message.tool_calls
-        self.messages.append({
-            'role' : 'tool',
-            'content' : str(response)
-        })
-        if tool_calls:
-            tool_payload = tool_calls[0]
-            result = await self.tool_manager.execute_tool(tool_payload)
+        try:
 
-        tool_response = []
-        for content in result.content:
-            tool_response.append(content.text)
+            tool_calls = response.message.tool_calls
+            self.messages.append({
+                'role' : 'tool',
+                'content' : str(response)
+            })
+            if tool_calls:
+                tool_payload = tool_calls[0]
+                result = await self.tool_manager.execute_tool(tool_payload)
 
-        return "".join(tool_response)
+            tool_response = []
+            for content in result.content:
+                tool_response.append(content.text)
+
+            return "".join(tool_response)
+        except Exception as e:
+            print(e)

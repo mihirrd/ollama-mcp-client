@@ -52,7 +52,7 @@ class OllamaToolManager:
         # local model is not always adding it in the args. Also design a way
         # to pick the repo path dynamically.
         if "repo_path" not in tool_input.keys():
-            tool_input.update({'repo_path' : "/Users/mihir.deshpande/Desktop/repos/ollama-mcp"})
+            tool_input.update({'repo_path' : "Users/mihirdeshpande/Desktop/repos/ollama-mcp"})
         if name not in self.tools:
             raise ValueError(f"Unknown tool: {name}")
         try:
