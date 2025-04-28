@@ -24,3 +24,4 @@ sse-starlette==2.2.1
 starlette==0.46.1
 typing-extensions==4.12.2
 uvicorn==0.34.0
+rich==13.9.4
