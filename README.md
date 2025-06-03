@@ -8,6 +8,7 @@ Ollama MCP is a tool for connecting Ollama-based language models with external t
 - Support for Git operations through MCP Git server
 - Extensible tool management system
 - Interactive command-line assistant interface
+- Interactive Ollama model selection at startup from available local models
 
 ## Installation
 
@@ -25,6 +26,20 @@ uv pip install -e .
 ```
 
 ## Usage
+
+### Ollama Model Selection
+
+Before the main application starts, you will be prompted to select an Ollama model to use.
+
+1.  **Prerequisites**:
+    *   Ensure Ollama is installed and running.
+    *   You must have at least one model pulled locally (e.g., via `ollama pull llama3.1:8b`). A list of models that support tool usage can be found on the [Ollama website](https://ollama.com/search?c=tools).
+
+2.  **Startup Process**:
+    *   The application will automatically detect and list all Ollama models available on your local machine.
+    *   You will be prompted to type the name of the model you wish to use from the displayed list.
+    *   If you enter an invalid model name, you will be prompted again until a valid selection is made.
+    *   The chosen model will then be used by the agent for all subsequent operations.
 
 ### Running the Git Assistant
 
