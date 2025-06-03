@@ -40,7 +40,7 @@ class OllamaToolManager:
             })
         return tool_specs
 
-    async def execute_tool(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+    async def execute_tool(self, payload: Dict[str, Any], repo_path) -> Dict[str, Any]:
         """
         Execute a tool based on the agent's request, handling name translation
         """
@@ -52,7 +52,7 @@ class OllamaToolManager:
         # local model is not always adding it in the args. Also design a way
         # to pick the repo path dynamically.
         if "repo_path" not in tool_input.keys():
-            tool_input.update({'repo_path' : "Users/mihirdeshpande/Desktop/repos/ollama-mcp"})
+            tool_input.update({'repo_path' : repo_path})
         if name not in self.tools:
             raise ValueError(f"Unknown tool: {name}")
         try:

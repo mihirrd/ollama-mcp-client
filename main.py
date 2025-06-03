@@ -9,6 +9,8 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.spinner import Spinner
+from mcp import StdioServerParameters
+
 
 def select_model_and_initialize_agent(console: Console):
     """
@@ -44,22 +46,26 @@ def select_model_and_initialize_agent(console: Console):
         else:
             console.print(f"[prompt.invalid]Invalid model name: '{user_choice}'. Please choose from the list.")
 
+
+    prompt_message = "Enter repository path, use `pwd` to fetch full path."
+    repo_path = Prompt.ask(prompt_message, console=console).strip()
+
     # Initialize OllamaToolManager here or pass as an argument if it's complex/shared
     tool_manager = OllamaToolManager()
-    agent = OllamaAgent(selected_model_name, tool_manager)
-    return agent
+    agent = OllamaAgent(selected_model_name, tool_manager, repo_path)
 
-async def main():
-    from mcp import StdioServerParameters # Moved import here
-    # Git server configuration
     git_server_params = StdioServerParameters(
         command="uvx",
-        args=["mcp-server-git", "--repository", "."],
+        args=["mcp-server-git", "--repository", repo_path],
         env=None
     )
+
+    return [agent, git_server_params]
+
+async def main():
     console = Console()
 
-    agent = select_model_and_initialize_agent(console)
+    agent, git_server_params = select_model_and_initialize_agent(console)
     if agent is None:
         console.print("[bold red]Agent initialization failed. Exiting.[/bold red]")
         return
