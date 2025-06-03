@@ -1,5 +1,6 @@
 import asyncio
-from mcp import StdioServerParameters
+import ollama
+# from mcp import StdioServerParameters # Moved into main()
 from mcpclient import MCPClient
 from ollama_toolmanager import OllamaToolManager
 from agent import OllamaAgent
@@ -9,7 +10,47 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.spinner import Spinner
 
+def select_model_and_initialize_agent(console: Console):
+    """
+    Prompts the user to select an Ollama model and initializes the OllamaAgent.
+    Returns the initialized agent, or None if selection fails or no models are available.
+    """
+    try:
+        available_models_data = ollama.list()
+        available_models = [model['name'] for model in available_models_data['models']]
+    except Exception as e:
+        console.print(f"[bold red]Error fetching Ollama models: {e}[/bold red]")
+        console.print("Please ensure Ollama is running and accessible.")
+        return None
+
+    if not available_models:
+        console.print("[bold red]No Ollama models found. Please pull a model first.[/bold red]")
+        return None
+
+    console.print("\n[bold cyan]Available Ollama Models:[/bold cyan]")
+    for model_name in available_models:
+        console.print(f"- {model_name}")
+    console.print("-" * 40)
+
+    selected_model_name = None
+    while True:
+        prompt_message = "Please select a model from the list above"
+        # In a testing environment, Prompt.ask might behave differently or need mocking.
+        # For now, assume it works as expected or will be mocked.
+        user_choice = Prompt.ask(prompt_message, console=console).strip()
+        if user_choice in available_models:
+            selected_model_name = user_choice
+            break
+        else:
+            console.print(f"[prompt.invalid]Invalid model name: '{user_choice}'. Please choose from the list.")
+
+    # Initialize OllamaToolManager here or pass as an argument if it's complex/shared
+    tool_manager = OllamaToolManager()
+    agent = OllamaAgent(selected_model_name, tool_manager)
+    return agent
+
 async def main():
+    from mcp import StdioServerParameters # Moved import here
     # Git server configuration
     git_server_params = StdioServerParameters(
         command="uvx",
@@ -18,9 +59,10 @@ async def main():
     )
     console = Console()
 
-    # Update model in OllamaAgent
-    # List of local models supporting tool usage: https://ollama.com/search?c=tools
-    agent = OllamaAgent("llama3.2:1b", OllamaToolManager())
+    agent = select_model_and_initialize_agent(console)
+    if agent is None:
+        console.print("[bold red]Agent initialization failed. Exiting.[/bold red]")
+        return
 
     print("Fetching available tools from the MCP server")
     async with MCPClient(git_server_params) as mcpclient:
@@ -47,7 +89,7 @@ async def main():
                 with console.status("[bold green]Finding the right tool for the job...[/bold green]", spinner="dots"):
                     res = await agent.get_response(user_prompt)
                     console.print("\n[bold magenta]Result:[/bold magenta]")
-                    console.print(Panel.fit(result, style="green"))
+                    console.print(Panel.fit(res, style="green"))
 
             except KeyboardInterrupt:
                 print("\nExiting...")
