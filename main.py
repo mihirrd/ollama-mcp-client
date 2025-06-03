@@ -17,7 +17,7 @@ def select_model_and_initialize_agent(console: Console):
     """
     try:
         available_models_data = ollama.list()
-        available_models = [model['name'] for model in available_models_data['models']]
+        available_models = [model['model'] for model in available_models_data['models']]
     except Exception as e:
         console.print(f"[bold red]Error fetching Ollama models: {e}[/bold red]")
         console.print("Please ensure Ollama is running and accessible.")
